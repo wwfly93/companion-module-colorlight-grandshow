@@ -10,7 +10,7 @@ const CHOICES_END = [
 export function getActionDefinitions(self) {
 	return {
 		send: {
-			name: 'Send Command',
+			name: 'Send Custom Command',
 			options: [
 				{
 					type: 'textinput',
@@ -38,25 +38,77 @@ export function getActionDefinitions(self) {
 					 * which then escapes character values over 0x7F
 					 * and destroys the 'binary' content
 					 */
-					const sendBuf = Buffer.from(cmd + action.options.id_end, 'latin1')
-
-					if (self.config.prot == 'tcp') {
+					const sendBuf = Buffer.from(cmd + action.options.id_end, 'utf-8')
+					if (self.udp !== undefined) {
 						self.log('debug', 'sending to ' + self.config.host + ': ' + sendBuf.toString())
 
-						if (self.socket !== undefined && self.socket.isConnected) {
-							self.socket.send(sendBuf)
-						} else {
-							self.log('debug', 'Socket not connected :(')
-						}
+						self.udp.send(sendBuf)
 					}
+				}
+			},
+		},
 
-					if (self.config.prot == 'udp') {
-						if (self.udp !== undefined) {
-							self.log('debug', 'sending to ' + self.config.host + ': ' + sendBuf.toString())
+		OpenAllScreen: {
+			name: 'Open All Screen',
+			options: [],
+			callback: async (action) => {
+				const sendBuf = Buffer.from('{"cmd":"OpenAllScreen"}', 'utf-8')
+				try {
+					self.log('debug', 'sending to ' + self.config.host + ': ' + sendBuf.toString())
+					self.udp.send(sendBuf)
+				} catch (error) {
+					self.log('error', 'OpenAllScreen cmd Error')
+				}
+			},
+		},
 
-							self.udp.send(sendBuf)
-						}
-					}
+		AdjustGlobalBrightness: {
+			name: 'Adjust Global Brightness',
+			options: [
+				{
+					id: 'BrightValue',
+					type: 'number',
+					label: 'Target Value',
+					default: 50,
+					min: -100,
+					max: 100,
+				},
+			],
+			callback: async (action) => {
+				const cmdStr = '{"cmd":"globalBrightness","param":' + Number(action.options.BrightValue) + '}'
+				const sendBuf = Buffer.from(cmdStr, 'utf-8')
+				try {
+					self.udp.send(sendBuf)
+				} catch (error) {
+					self.log('error', 'Adjust Global Brightness cmd Error' + cmdStr)
+				}
+			},
+		},
+
+		GetCurrentBright: {
+			name: 'Get Current Global Brightness',
+			options: [],
+			callback: async (action) => {
+				const sendBuf = Buffer.from('{"cmd":"getGlobalBrightness"}', 'utf-8')
+				try {
+					self.log('debug', 'sending to ' + self.config.host + ': ' + sendBuf.toString())
+					self.udp.send(sendBuf)
+				} catch (error) {
+					self.log('error', 'getGlobalBrightness cmd Error')
+				}
+			},
+		},
+
+		GetScreenBlackState: {
+			name: 'Get Screen Black State',
+			options: [],
+			callback: async (action) => {
+				const sendBuf = Buffer.from('{"cmd":"getBlackAll"}', 'utf-8')
+				try {
+					self.log('debug', 'sending to ' + self.config.host + ': ' + sendBuf.toString())
+					self.udp.send(sendBuf)
+				} catch (error) {
+					self.log('error', 'GetScreenBlackState cmd Error')
 				}
 			},
 		},

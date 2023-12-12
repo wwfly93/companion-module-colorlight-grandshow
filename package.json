@@ -1,14 +1,16 @@
 {
-	"name": "generic-tcp-udp",
-	"version": "2.0.0",
+	"name": "colorlight-grandshow",
+	"version": "1.0.0",
 	"main": "index.js",
 	"type": "module",
+	"prettier": "@companion-module/tools/.prettierrc.json",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"format": "prettier -w ."
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/bitfocus/companion-module-generic-tcp-udp.git"
+		"url": "git+https://github.com/wwfly93/companion-module-colorlight-grandshow.git"
 	},
 	"license": "MIT",
 	"dependencies": {

@@ -3,21 +3,21 @@
 	"name": "Golorlight-GrandShow",
 	"shortname": "GrandShow",
 	"description": "GrandShow External Contorl",
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-generic-tcp-udp.git",
-	"bugs": "https://github.com/bitfocus/companion-module-generic-tcp-udp/issues",
+	"repository": "git+https://github.com/wwfly93/companion-module-colorlight-grandshow.git",
+	"bugs": "https://github.com/wwfly93/companion-module-colorlight-grandshow/issues",
 	"maintainers": [
 		{
-			"name": "Andreas H. Thomsen",
-			"email": "mc-hauge@hotmail.com"
+			"name": "wuwei",
+			"email": "wuwei@lednets.com"
 		}
 	],
 	"legacyIds": [],
 	"runtime": {
 		"type": "node18",
 		"api": "nodejs-ipc",
-		"apiVersion": "0.0.0",
+		"apiVersion": "1.0.0",
 		"entrypoint": "../index.js"
 	},
 	"manufacturer": "Colorlight",
