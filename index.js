@@ -1,17 +1,17 @@
 import { InstanceBase, InstanceStatus, runEntrypoint, TCPHelper, UDPHelper } from '@companion-module/base'
 import { ConfigFields } from './config.js'
-import { getActionDefinitions } from './actions.js'
-import { variables } from './variables.js'
-import { GetFeedbackDefinitions } from './feedbacks.js'
+import { getActions } from './actions.js'
+import { getVariables } from './variables.js'
+import { GetFeedbacks } from './feedbacks.js'
 import { parseJson } from './Utils/parseJson.js'
 
 class GenericUdpInstance extends InstanceBase {
 	async init(config) {
 		this.config = config
-
-		this.setActionDefinitions(getActionDefinitions(this))
-		this.setFeedbackDefinitions(GetFeedbackDefinitions(this))
-		this.setVariableDefinitions(variables)
+		this.states = {}
+		this.setActionDefinitions(getActions(this))
+		this.setFeedbackDefinitions(GetFeedbacks(this))
+		this.setVariableDefinitions(getVariables(this))
 
 		await this.configUpdated(config)
 	}
@@ -67,8 +67,8 @@ class GenericUdpInstance extends InstanceBase {
 				this.updateStatus(InstanceStatus.Ok)
 			})
 
-			this.udp.on('data', (msg) =>{
-				this.setVariableValues({'lastMessage': msg.toString('utf-8',0,msg.length)})
+			this.udp.on('data', (msg) => {
+				this.setVariableValues({ lastMessage: msg.toString('utf-8', 0, msg.length) })
 				this.log('info', 'Get Data: ' + msg.toString('utf-8', 0, msg.length))
 				parseJson(this, msg)
 			})
@@ -79,10 +79,6 @@ class GenericUdpInstance extends InstanceBase {
 		} else {
 			this.updateStatus(InstanceStatus.BadConfig)
 		}
-	}
-
-	updateFeedbacks() {
-		UpdateFeedbacks(this)
 	}
 }
 
